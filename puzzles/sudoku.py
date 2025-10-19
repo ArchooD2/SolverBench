@@ -76,7 +76,7 @@ def make_puzzle(board: Board, holes: int = 40) -> Board:
 # ----------------------------------------------------------------------
 # Convenience wrappers for benchmarking
 # ----------------------------------------------------------------------
-def generate_dataset(n: int = 3, holes: int = 40) -> tuple[list[Board], list[Board]]:
+def generate_dataset(n: int = 45, holes: int = 40) -> tuple[list[Board], list[Board]]:
     """Return (puzzles, solutions) pair lists."""
     puzzles, solutions = [], []
     for i in range(n):

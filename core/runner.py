@@ -10,6 +10,7 @@ Handles:
 - Validating output if a reference solution is available
 """
 
+import copy
 import time
 import tracemalloc
 from typing import Any, Callable, Dict, Optional
@@ -36,7 +37,7 @@ def run_single(puzzle: str, solver_name: str, input_data: Any,
     """
     solver = get_solver(puzzle, solver_name)
     result = {"puzzle": puzzle, "solver": solver_name}
-
+    
     # measure performance
     if measure_memory:
         tracemalloc.start()
@@ -78,28 +79,18 @@ def run_single(puzzle: str, solver_name: str, input_data: Any,
     return result
 
 
-def run_batch(puzzle: str, solver_names: list[str], dataset: list[Any],
-              references: Optional[list[Any]] = None,
-              measure_memory: bool = False) -> list[Dict[str, Any]]:
+def run_batch(puzzle: str, solver_names, dataset, references=None, measure_memory=False):
     """
-    Run multiple solvers over a dataset for benchmarking.
-
-    Args:
-        puzzle: which puzzle category
-        solver_names: list of solvers to benchmark
-        dataset: list of input instances
-        references: optional correct answers (parallel to dataset)
-        measure_memory: toggle for memory tracking
-
-    Returns:
-        list of result dicts (one per solver per test case)
+    Run each solver on each input in the dataset, returning a flat result list.
     """
     results = []
     for i, solver_name in enumerate(solver_names):
         print(f"[SolverBench] Running solver '{solver_name}' on puzzle '{puzzle}'...")
         for j, input_case in enumerate(dataset):
             ref = references[j] if references and j < len(references) else None
-            res = run_single(puzzle, solver_name, input_case, ref, measure_memory)
+
+            fresh_input = copy.deepcopy(input_case)
+            res = run_single(puzzle, solver_name, fresh_input, ref, measure_memory)
             res["case_index"] = j
             results.append(res)
     return results
