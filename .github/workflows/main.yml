@@ -1,0 +1,24 @@
+name: CI Uptime
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  wakey-wakey:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Startup Message
+        run: |
+          echo ""
+          echo -e "\033[1;35mSolverBench CI works\033[0m"
+          echo ""
+
+      - name: Ascii Logo
+        run: cat .github/assets/logo.txt
+        
+      - name: Done ✅
+        run: echo "Workflow ran successfully"
