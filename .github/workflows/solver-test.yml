@@ -14,7 +14,8 @@ jobs:
       - name: List puzzles
         id: set-matrix
         run: |
-          python3 utils/list_puzzles.py >> $GITHUB_OUTPUT
+          PUZZLES=$(ls puzzles | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          echo "puzzles=$PUZZLES" >> $GITHUB_OUTPUT
 
   test:
     needs: discover
