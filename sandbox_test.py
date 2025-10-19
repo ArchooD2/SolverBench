@@ -1,8 +1,9 @@
-from core.registry import register_solver, get_solver, list_puzzles, list_solvers
+from puzzles.sudoku import EXAMPLE_PUZZLES, EXAMPLE_SOLUTIONS
+from core.runner import run_single
+import example_solvers.sudoku_backtracking  # ensures solver registers
 
-@register_solver("demo", "echo")
-def echo_solver(x): return x
+board = EXAMPLE_PUZZLES[0]
+solution = EXAMPLE_SOLUTIONS[0]
 
-print(list_puzzles())
-print(list_solvers("demo"))
-print(get_solver("demo", "echo")("hello world"))
+res = run_single("sudoku", "backtracking", board, reference_output=solution)
+print(res)

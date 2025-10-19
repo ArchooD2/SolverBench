@@ -23,7 +23,18 @@ from typing import Callable, Dict
 
 # main registry structure
 _registry: Dict[str, Dict[str, Callable]] = {}
+_puzzles: dict[str, dict] = {}
 
+def register_puzzle(name: str, accuracy_fn=None):
+    """Register a puzzle type and its optional accuracy function."""
+    def decorator(cls_or_func):
+        _puzzles[name] = {"accuracy": accuracy_fn}
+        return cls_or_func
+    return decorator
+
+def get_accuracy_fn(puzzle: str):
+    entry = _puzzles.get(puzzle, {})
+    return entry.get("accuracy")
 
 def register_solver(puzzle: str, name: str):
     """

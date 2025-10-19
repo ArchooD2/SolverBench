@@ -1,6 +1,7 @@
 ![Python](https://img.shields.io/badge/python-3.12-blue) ![GitHub License](https://img.shields.io/github/license/ArchooD2/SolverBench)
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/ArchooD2/SolverBench/total)
-![GitHub repo size](https://img.shields.io/github/repo-size/ArchooD2/SolverBench)
+![GitHub repo size](https://img.shields.io/github/repo-size/ArchooD2/SolverBench) ![Status](https://img.shields.io/badge/status-in%20development-orange)
+
 # 🧩 SolverBench  
 *A lightweight benchmarking framework for comparing logic solvers.*
 
@@ -68,13 +69,10 @@ solverbench/
 │   ├── registry.py
 │   └── utils.py
 ├── puzzles/
-│   ├── sudoku.py
-│   ├── mastermind.py
-│   └── pathfinding.py
-├── solvers/
-│   ├── backtracking_sudoku.py
-│   ├── bfs_pathfinder.py
-│   └── constraint_mastermind.py
+│   └── sudoku.py
+├── example_solvers/
+│   ├── sudoku_backtracking.py
+│   └── sudoku_scanfill
 ├── cli.py
 └── README.md
 ```
@@ -83,17 +81,13 @@ solverbench/
 
 ## 🧑‍💻 Contributing
 1. Fork the repository  
-2. Add your solver under `solvers/`  
+2. Add your solver under `example_solvers/`  
 3. Register it using the `@register_solver` decorator  
 4. Submit a pull request — SolverBench will handle testing automatically!
 
 ---
 
 ## 🧾 License
-MIT License © PJ 2025
+MIT License © PJSans 2025
 
 ---
-
-![Python](https://img.shields.io/badge/python-3.12-blue)
-![MIT](https://img.shields.io/badge/license-MIT-green)
-![Status](https://img.shields.io/badge/status-in%20development-orange)
