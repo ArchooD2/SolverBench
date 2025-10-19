@@ -1,10 +1,13 @@
 import os
 import json
 
+# Grab all .py files in puzzles/, strip extension
 puzzles = [
-    name for name in os.listdir("puzzles")
-    if os.path.isdir(os.path.join("puzzles", name))
+    os.path.splitext(f)[0]
+    for f in os.listdir("puzzles")
+    if f.endswith(".py")
 ]
 
-# Output in GitHub Actions format
-print(f"::set-output name=puzzles::{json.dumps(puzzles)}")
+# Write to GitHub Actions output
+with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
+    fh.write(f"puzzles={json.dumps(puzzles)}\n")
