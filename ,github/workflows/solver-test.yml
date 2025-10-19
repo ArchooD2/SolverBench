@@ -1,0 +1,38 @@
+name: Test All Solvers
+
+on: [push, pull_request]
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    outputs:
+      puzzles: ${{ steps.set-matrix.outputs.puzzles }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: List puzzles
+        id: set-matrix
+        run: |
+          python3 utils/list_puzzles.py >> $GITHUB_OUTPUT
+
+  test:
+    needs: discover
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        puzzle: ${{ fromJson(needs.discover.outputs.puzzles) }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt || true
+
+      - name: Run tests for ${{ matrix.puzzle }}
+        run: python cli.py benchmark ${{ matrix.puzzle }} --all
