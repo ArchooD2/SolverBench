@@ -15,7 +15,7 @@ import importlib.util
 import importlib
 import pkgutil
 from typing import List
-
+from core.registry import get_accuracy_fn
 from core.runner import run_batch
 from core.registry import list_solvers
 from core.metrics import summarize_results
@@ -66,17 +66,25 @@ else:
 # ---------------------------------------------------------------------------
 def run_benchmark(puzzle: str, solvers: List[str], measure_memory=False):
     """Run solvers on the given puzzle dataset."""
-    if puzzle == "sudoku":
-        dataset, refs = sudoku.generate_dataset(n=45, holes=35)
-    else:
-        print(f"[ERROR] Unknown puzzle '{puzzle}'.")
+
+    # Try to dynamically import the puzzle module
+    try:
+        puzzle_module = __import__(f"puzzles.{puzzle}", fromlist=[""])
+    except ModuleNotFoundError:
+        print(f"[ERROR] Puzzle module 'puzzles.{puzzle}' not found.")
+        sys.exit(1)
+
+    # Try to call the dataset generator
+    try:
+        dataset, refs = puzzle_module.generate_dataset()
+    except AttributeError:
+        print(f"[ERROR] Puzzle '{puzzle}' does not define generate_dataset().")
         sys.exit(1)
 
     results = run_batch(
         puzzle, solvers, dataset, references=refs, measure_memory=measure_memory
     )
     print(summarize_results(results))
-
 
 # ---------------------------------------------------------------------------
 # SnapArg CLI
